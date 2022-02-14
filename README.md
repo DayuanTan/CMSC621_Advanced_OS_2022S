@@ -14,4 +14,11 @@ Class home page: [web](https://www.csee.umbc.edu/~kalpakis/courses/621-sp22/cmsc
 
 # Projects
 
+- Proj1 Multithread using go.
+
+Reference:
+
+Golang command line argument https://stackoverflow.com/a/2707480
+
+
 
