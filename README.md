@@ -21,7 +21,8 @@ Reference:
 
 - Golang command line argument https://stackoverflow.com/a/2707480
 - main test https://stackoverflow.com/a/33723649
-
+- write into file https://gobyexample.com/writing-files
+- check whether a file exist https://stackoverflow.com/a/66405130
 
 
 
