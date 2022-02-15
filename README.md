@@ -6,7 +6,7 @@ Class home page: [web](https://www.csee.umbc.edu/~kalpakis/courses/621-sp22/cmsc
 # HW
 - [HW1 Critique of the paper **Epidemic Algorithms for Replicated Database Maintenance** by Demers et al.](./doc/hw1)
 - - [Paper PDF](./doc/hw1/p1-demers.pdf), [slides PDF](doc/hw1/slides.pdf)
-- - [My Critique]()
+- - [My Critique](doc/hw1/Critique_DayuanTan_v2.pdf)
 
 - [HW2]
 
@@ -15,10 +15,13 @@ Class home page: [web](https://www.csee.umbc.edu/~kalpakis/courses/621-sp22/cmsc
 # Projects
 
 - Proj1 Multithread using go.
+- - [Proj1 assignment PDF](doc/proj1/proj1.pdf)
 
 Reference:
 
-Golang command line argument https://stackoverflow.com/a/2707480
+- Golang command line argument https://stackoverflow.com/a/2707480
+- main test https://stackoverflow.com/a/33723649
+
 
 
 
