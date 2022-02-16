@@ -16,6 +16,7 @@ func main() {
 		fmt.Println("Two arguments are: ", M, " ", fname)
 	} else {
 		fmt.Println("Please provide two arguments: M and fname!")
+		panic("Main func argument maloperation!")
 	}
 
 	geneRandomInt(fname) // generate randome 100 int numbers and store into input_data_file.txt.
@@ -47,4 +48,5 @@ func geneRandomInt(fname string) {
 	}
 	_, err = f.WriteString("\n")
 	checkErr(err)
+	fmt.Println(fname, " has been generated and 100 random int has been stored.")
 }

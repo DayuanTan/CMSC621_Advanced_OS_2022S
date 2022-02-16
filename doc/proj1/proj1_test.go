@@ -7,18 +7,24 @@ import (
 	"testing"
 )
 
-func TestCommandLineArgument(t *testing.T) {
+const fnameTest = "input_data_file_test.txt"
+
+func TestCommandLineArgument4MainPanic(t *testing.T) {
 	oldArgs := os.Args
 	defer func() { os.Args = oldArgs }() // os.Args is a "global variable", so keep the state from before the test, and restore it after.
 
-	fmt.Println("Expected: \nTwo arguments are:  3   fnameTestname")
-	fmt.Println("Got:")
-	os.Args = []string{"cmd", "3", "fnameTestname"}
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The main() did not panic for wrong command line arguments.")
+		}
+	}()
+
+	os.Args = []string{"cmd", "3", fnameTest, "this argument causes panic"}
 	main()
 }
 
 func TestGenerRandomInt(t *testing.T) {
-	filename := "input_test.txt"
+	filename := "input_data_file_test.txt"
 	if _, err := os.Stat(filename); !errors.Is(err, os.ErrNotExist) {
 		// file exists
 		t.Errorf("File %s should not exist at this moment!", filename)

@@ -14,15 +14,5 @@ Class home page: [web](https://www.csee.umbc.edu/~kalpakis/courses/621-sp22/cmsc
 
 # Projects
 
-- Proj1 Multithread using go.
-- - [Proj1 assignment PDF](doc/proj1/proj1.pdf)
-
-Reference:
-
-- Golang command line argument https://stackoverflow.com/a/2707480
-- main test https://stackoverflow.com/a/33723649
-- write into file https://gobyexample.com/writing-files
-- check whether a file exist https://stackoverflow.com/a/66405130
-
-
+- Proj1 [Multithread using go](doc/proj1/).
 
