@@ -30,6 +30,10 @@ func main() {
 }
 
 func concurrencySum(m int, fname string) {
+	fi, err := os.Stat(fname)
+	checkErr(err)
+	fmt.Printf("The file %s is %d bytes long. It is partitioned into %d parts.\n", fname, fi.Size(), m)
+
 	subsums := make(chan int64)
 
 	for i := 0; i < m; i++ {

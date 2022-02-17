@@ -58,6 +58,7 @@ go test -cover
 - concurrency vs multithreading https://stackoverflow.com/questions/35100102/what-is-the-differene-between-concurrency-and-multithreading
 - concurrency in go (goroutine, channel, buffered channel) https://www.youtube.com/watch?v=LvgVSSpwND8
 - Go routines (A tour of go) https://go.dev/tour/concurrency/1
-- 
+- Channel range usage https://gist.github.com/DayuanTan/b01a67b1295d160e63c0a14b60c849bf
+- to know how many bytes a file has https://stackoverflow.com/a/17133613 
 
 
