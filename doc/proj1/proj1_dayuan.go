@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"os"
@@ -9,6 +10,12 @@ import (
 )
 
 const randomIntAmnt = 100
+
+type Assignment struct {
+	Datafile     string
+	StartBytePos int64
+	EndBytePos   int64
+}
 
 func main() {
 	var M, fname string
@@ -32,12 +39,25 @@ func main() {
 func concurrencySum(m int, fname string) {
 	fi, err := os.Stat(fname)
 	checkErr(err)
-	fmt.Printf("The file %s is %d bytes long. It is partitioned into %d parts.\n", fname, fi.Size(), m)
+	fByteSize := fi.Size()
+	partLen := fByteSize / int64(m)
+	fmt.Printf("The file %s is %d bytes long. It is partitioned into %d parts.\n", fname, fByteSize, m)
 
 	subsums := make(chan int64)
 
 	for i := 0; i < m; i++ {
-		go worker("hi", subsums)
+		startBytePos := partLen * int64(i)
+		var endBytePos int64
+		if i < m-1 {
+			endBytePos = partLen * int64(i+1)
+		} else if i == m-1 {
+			endBytePos = fByteSize
+		}
+		assignmenti := Assignment{fname, startBytePos, endBytePos}
+		b, err := json.Marshal(assignmenti)
+		checkErr(err)
+
+		go worker(b, subsums)
 	}
 
 	for i := 0; i < m; i++ {
@@ -45,7 +65,11 @@ func concurrencySum(m int, fname string) {
 	}
 }
 
-func worker(fname string, subsums chan int64) {
+func worker(assignment []byte, subsums chan int64) {
+	var assignmenti Assignment
+	err := json.Unmarshal(assignment, &assignmenti)
+	checkErr(err)
+	fmt.Println("worker got assignment: ", assignmenti)
 	subsums <- 101
 }
 
