@@ -95,6 +95,13 @@ func TestReadUntilBlankByte(t *testing.T) {
 	}
 	fmt.Println("14")
 
+	err = os.Remove(fnameReadUntilBlankByteTest) // rm before leaving the test
+	checkErr(err)
+	if _, err := os.Stat(fnameReadUntilBlankByteTest); !errors.Is(err, os.ErrNotExist) {
+		// file exists
+		t.Errorf("File %s should not exist after Remove()!", fnameReadUntilBlankByteTest)
+	}
+	fmt.Println(fnameReadUntilBlankByteTest, " removed successfully after testing!")
 }
 
 func TestSumup(t *testing.T) {
