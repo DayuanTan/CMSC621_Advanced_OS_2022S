@@ -52,7 +52,7 @@ func concurrencySum(m int, fname string) {
 		startBytePos = endBytePos
 		if i < m-1 {
 			tempEndBytePos := partLen * int64(i+1)
-			endBytePos = tempEndBytePos + readUntilBlankByte(fname, tempEndBytePos, fByteSize)
+			endBytePos = readUntilBlankByte(fname, tempEndBytePos, fByteSize)
 		} else if i == m-1 {
 			endBytePos = fByteSize
 		}
@@ -88,7 +88,6 @@ func readUntilBlankByte(fname string, tempEndBytePos int64, fByteSize int64) int
 			theByteAfterEndByte := make([]byte, 1)
 			_, err = f.Read(theByteAfterEndByte) // read 1 byte to check whether it is blank byte
 			checkErr(err)
-			fmt.Println("read: ", string(theByteAfterEndByte))
 
 			if string(theByteAfterEndByte) == " " {
 				break
@@ -109,6 +108,8 @@ func sumup(fname string, startBytePos int64, endBytePos int64) int64 {
 	actualRead, err := f.Read(dataBytes)
 	checkErr(err)
 	fmt.Printf("Actual read %d bytes: %s\n", actualRead, string(dataBytes[:]))
+
+	//calc sum of dataByteshere
 
 	return 100
 }
