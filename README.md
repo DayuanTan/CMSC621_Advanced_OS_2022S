@@ -15,6 +15,6 @@ Class home page: [web](https://www.csee.umbc.edu/~kalpakis/courses/621-sp22/cmsc
 
 # Projects
 
-- Proj1 Multithread using go.
+- Proj1 Multithread, Concurrency (goroutine, buffered channel).
 - - [My solution (code and doc)](doc/proj1/).
 

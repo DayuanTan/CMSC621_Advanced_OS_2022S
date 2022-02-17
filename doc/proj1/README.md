@@ -1,7 +1,7 @@
 
 # Project 1
  
-Write a GoLang multithreaded applications to compute the average of the integers stored in a file. 
+Write a GoLang multithreaded (goroutine) applications to compute the average of the integers stored in a file. 
 
 ## Assignment
 
@@ -53,5 +53,11 @@ go test -cover
 - write into file https://gobyexample.com/writing-files
 - check whether a file exist https://stackoverflow.com/a/66405130
 - go test -cover and -coverprofile https://stackoverflow.com/a/65454318
+- concurrency vs parallelism https://stackoverflow.com/a/1050257
+- concurrency vs parallelism vs asynchronization https://stackoverflow.com/questions/4844637/what-is-the-difference-between-concurrency-parallelism-and-asynchronous-methods
+- concurrency vs multithreading https://stackoverflow.com/questions/35100102/what-is-the-differene-between-concurrency-and-multithreading
+- concurrency in go (goroutine, channel, buffered channel) https://www.youtube.com/watch?v=LvgVSSpwND8
+- Go routines (A tour of go) https://go.dev/tour/concurrency/1
+- 
 
 

@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+const randomIntAmnt = 100
+
 func main() {
 	var M, fname string
 	if len(os.Args) == 3 {
@@ -20,6 +22,27 @@ func main() {
 	}
 
 	geneRandomInt(fname) // generate randome 100 int numbers and store into input_data_file.txt.
+
+	intM, err := strconv.Atoi(M)
+	checkErr(err)
+
+	concurrencySum(intM, fname)
+}
+
+func concurrencySum(m int, fname string) {
+	subsums := make(chan int64)
+
+	for i := 0; i < m; i++ {
+		go worker("hi", subsums)
+	}
+
+	for i := 0; i < m; i++ {
+		fmt.Println(<-subsums)
+	}
+}
+
+func worker(fname string, subsums chan int64) {
+	subsums <- 101
 }
 
 func checkErr(e error) {
@@ -37,7 +60,7 @@ func geneRandomInt(fname string) {
 	checkErr(err)
 	defer f.Close()
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < randomIntAmnt; i++ {
 		ranInt := ran.Intn(10000)
 		// fmt.Println(ranInt)
 		ranInt64Str := strconv.FormatInt(int64(ranInt), 10)
