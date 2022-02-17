@@ -45,11 +45,14 @@ func concurrencySum(m int, fname string) {
 
 	subsums := make(chan int64)
 
+	startBytePos := int64(0)
+	endBytePos := int64(0)
 	for i := 0; i < m; i++ {
-		startBytePos := partLen * int64(i)
-		var endBytePos int64
+		// [startBytePos, endBytePos), left included, right excluded
+		startBytePos = endBytePos
 		if i < m-1 {
-			endBytePos = partLen * int64(i+1)
+			tempEndBytePos := partLen * int64(i+1)
+			endBytePos = tempEndBytePos + readUntilBlankByte(fname, tempEndBytePos, fByteSize)
 		} else if i == m-1 {
 			endBytePos = fByteSize
 		}
@@ -70,7 +73,44 @@ func worker(assignment []byte, subsums chan int64) {
 	err := json.Unmarshal(assignment, &assignmenti)
 	checkErr(err)
 	fmt.Println("worker got assignment: ", assignmenti)
-	subsums <- 101
+	subsums <- sumup(assignmenti.Datafile, assignmenti.StartBytePos, assignmenti.EndBytePos)
+}
+
+func readUntilBlankByte(fname string, tempEndBytePos int64, fByteSize int64) int64 {
+	f, err := os.Open(fname)
+	checkErr(err)
+	defer f.Close()
+
+	if tempEndBytePos < fByteSize-1 { // if == fByteSize-1 then it is last pos then no action needed
+		for {
+			_, err := f.Seek(tempEndBytePos, 0) // locate at endByte
+			checkErr(err)
+			theByteAfterEndByte := make([]byte, 1)
+			_, err = f.Read(theByteAfterEndByte) // read 1 byte to check whether it is blank byte
+			checkErr(err)
+			fmt.Println("read: ", string(theByteAfterEndByte))
+
+			if string(theByteAfterEndByte) == " " {
+				break
+			} else {
+				tempEndBytePos++
+			}
+		}
+	}
+	return tempEndBytePos
+}
+
+func sumup(fname string, startBytePos int64, endBytePos int64) int64 {
+	f, err := os.Open(fname)
+	checkErr(err)
+	defer f.Close()
+
+	dataBytes := make([]byte, endBytePos-startBytePos)
+	actualRead, err := f.Read(dataBytes)
+	checkErr(err)
+	fmt.Printf("Actual read %d bytes: %s\n", actualRead, string(dataBytes[:]))
+
+	return 100
 }
 
 func checkErr(e error) {
