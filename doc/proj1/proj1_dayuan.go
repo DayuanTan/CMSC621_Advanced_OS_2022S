@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const randomIntAmnt = 10 // how many random int numbers in input_data_file.txt
+const randomIntAmnt = 100 // how many random int numbers in input_data_file.txt
 
 type Assignment struct {
 	Datafile     string

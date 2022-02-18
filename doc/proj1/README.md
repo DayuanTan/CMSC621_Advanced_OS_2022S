@@ -46,9 +46,14 @@ go test -cover
 
 ```
 
+Screenshots:
+![](img/s1.png)
+![](img/s2.png)
+
+
 ## Note
 
-- position 0 refers to the first byte. So in the example of "1 2 33 444 555", [0, 1) read the first byte "1"; [1,5) gets " 2 3". 
+- position 0 refers to the first byte. So in the example of "1 2 33 444 555", for [0, 1) you need to read the first byte "1"; [1,5) gets " 2 3"; [2,6) gets "2 33"; [2,7) gets "2 33 ". 
 
 ## Reference:
 
@@ -64,5 +69,6 @@ go test -cover
 - Go routines (A tour of go) https://go.dev/tour/concurrency/1
 - Channel range usage https://gist.github.com/DayuanTan/b01a67b1295d160e63c0a14b60c849bf
 - to know how many bytes a file has https://stackoverflow.com/a/17133613 
+- Json in go: json.Marshal() json.Unmarshal() https://go.dev/blog/json
 
 
