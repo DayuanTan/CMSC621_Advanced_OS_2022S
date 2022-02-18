@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -124,50 +126,58 @@ func TestSumup(t *testing.T) {
 	// the input of sumup cannot cut a number, e.g. sumup(fnameSumupTest, 1, 6) cuts the 33
 	// this is guranteed in concurrencySum already
 	actual := sumup(fnameSumupTest, 0, 7, 14) // [0,7) = "1 2 33 "
-	expected := int64(36)
-	if actual != expected {
+	expected, err := json.Marshal(SubSumResult{int64(2), int64(1), int64(1), int64(33), int64(0), int64(7)})
+	checkErr(err)
+	if !bytes.Equal(actual, expected) {
 		t.Errorf("TestSumup() == %q, want %q", actual, expected)
 	}
 
 	actual = sumup(fnameSumupTest, 1, 7, 14) // [1,7) = " 2 33 "
-	expected = int64(35)
-	if actual != expected {
+	expected, err = json.Marshal(SubSumResult{int64(0), int64(0), int64(2), int64(33), int64(1), int64(7)})
+	checkErr(err)
+	if !bytes.Equal(actual, expected) {
 		t.Errorf("TestSumup() == %q, want %q", actual, expected)
 	}
 
 	actual = sumup(fnameSumupTest, 1, 10, 14) // [1,10) = " 2 33 444"
-	expected = int64(479)
-	if actual != expected {
+	expected, err = json.Marshal(SubSumResult{int64(33), int64(1), int64(2), int64(444), int64(1), int64(10)})
+	checkErr(err)
+	if !bytes.Equal(actual, expected) {
 		t.Errorf("TestSumup() == %q, want %q", actual, expected)
 	}
 
 	actual = sumup(fnameSumupTest, 1, 11, 14) // [1,11) = " 2 33 444 ""
-	expected = int64(479)
-	if actual != expected {
+	expected, err = json.Marshal(SubSumResult{int64(33), int64(1), int64(2), int64(444), int64(1), int64(11)})
+	checkErr(err)
+	if !bytes.Equal(actual, expected) {
 		t.Errorf("TestSumup() == %q, want %q", actual, expected)
 	}
 
 	actual = sumup(fnameSumupTest, 2, 11, 14) // [2,11) = "2 33 444 "
-	expected = int64(479)
-	if actual != expected {
+	expected, err = json.Marshal(SubSumResult{int64(33), int64(1), int64(2), int64(444), int64(2), int64(11)})
+	checkErr(err)
+	if !bytes.Equal(actual, expected) {
 		t.Errorf("TestSumup() == %q, want %q", actual, expected)
 	}
 
 	actual = sumup(fnameSumupTest, 3, 11, 14) // [3,11) = " 33 444 "
-	expected = int64(477)
-	if actual != expected {
+	expected, err = json.Marshal(SubSumResult{int64(0), int64(0), int64(33), int64(444), int64(3), int64(11)})
+	checkErr(err)
+	if !bytes.Equal(actual, expected) {
 		t.Errorf("TestSumup() == %q, want %q", actual, expected)
 	}
 
 	actual = sumup(fnameSumupTest, 7, 14, 14) // [7,14) = "444 555"
-	expected = int64(999)
-	if actual != expected {
+	expected, err = json.Marshal(SubSumResult{int64(0), int64(0), int64(444), int64(555), int64(7), int64(14)})
+	checkErr(err)
+	if !bytes.Equal(actual, expected) {
 		t.Errorf("TestSumup() == %q, want %q", actual, expected)
 	}
 
 	actual = sumup(fnameSumupTest, 7, 15, 14) // [7,15) is out of range so it is truncated to [7,14)="444 555"
-	expected = int64(999)
-	if actual != expected {
+	expected, err = json.Marshal(SubSumResult{int64(0), int64(0), int64(444), int64(555), int64(7), int64(14)})
+	checkErr(err)
+	if !bytes.Equal(actual, expected) {
 		t.Errorf("TestSumup() == %q, want %q", actual, expected)
 	}
 

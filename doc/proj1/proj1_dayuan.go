@@ -18,6 +18,15 @@ type Assignment struct {
 	EndBytePos   int64
 }
 
+type SubSumResult struct {
+	PartialSum   int64
+	PartialCount int64
+	Prefix       int64
+	Suffix       int64
+	StartBytePos int64
+	EndBytePos   int64
+}
+
 func main() {
 	var M, fname string
 	if len(os.Args) == 3 {
@@ -34,17 +43,18 @@ func main() {
 	intM, err := strconv.Atoi(M) // string to int
 	checkErr(err)
 
-	concurrencySum(intM, fname)
+	avg := concurrencySum(intM, fname)
+	fmt.Println("\nOverall average is: ", avg)
 }
 
-func concurrencySum(m int, fname string) {
+func concurrencySum(m int, fname string) float64 {
 	fi, err := os.Stat(fname)
 	checkErr(err)
 	fByteSize := fi.Size()
 	partLen := fByteSize / int64(m)
 	fmt.Printf("The file %s is %d bytes long. It is partitioned into %d parts.\n", fname, fByteSize, m)
 
-	subsums := make(chan int64)
+	subsumsChan := make(chan []byte)
 
 	startBytePos := int64(0)
 	endBytePos := int64(0)
@@ -58,23 +68,35 @@ func concurrencySum(m int, fname string) {
 			endBytePos = fByteSize
 		}
 		assignmenti := Assignment{fname, startBytePos, endBytePos}
-		b, err := json.Marshal(assignmenti)
+		assignmentiJson, err := json.Marshal(assignmenti)
 		checkErr(err)
 
-		go worker(b, subsums, fByteSize)
+		go worker(assignmentiJson, subsumsChan, fByteSize)
 	}
 
+	totalSum := int64(0)
+	totalCount := int64(0)
 	for i := 0; i < m; i++ {
-		fmt.Println(<-subsums)
+		var subsumResulti SubSumResult
+		err := json.Unmarshal(<-subsumsChan, &subsumResulti)
+		checkErr(err)
+		fmt.Println("Got worker result: ", subsumResulti)
+
+		totalSum += subsumResulti.PartialSum + subsumResulti.Prefix + subsumResulti.Suffix
+		totalCount += 2 + subsumResulti.PartialCount
 	}
+
+	return float64(totalSum) / float64(totalCount)
+
 }
 
-func worker(assignment []byte, subsums chan int64, fByteSize int64) {
+func worker(assignment []byte, subsumsChan chan []byte, fByteSize int64) {
 	var assignmenti Assignment
 	err := json.Unmarshal(assignment, &assignmenti)
 	checkErr(err)
 	fmt.Println("worker got assignment: ", assignmenti)
-	subsums <- sumup(assignmenti.Datafile, assignmenti.StartBytePos, assignmenti.EndBytePos, fByteSize)
+
+	subsumsChan <- sumup(assignmenti.Datafile, assignmenti.StartBytePos, assignmenti.EndBytePos, fByteSize)
 }
 
 func readUntilBlankByte(fname string, tempEndBytePos int64, fByteSize int64) int64 {
@@ -100,7 +122,7 @@ func readUntilBlankByte(fname string, tempEndBytePos int64, fByteSize int64) int
 	return tempEndBytePos
 }
 
-func sumup(fname string, startBytePos int64, endBytePos int64, fByteSize int64) int64 { // the input will gurantee that don't cut a number, by concurrencySum
+func sumup(fname string, startBytePos int64, endBytePos int64, fByteSize int64) []byte { // the input will gurantee that don't cut a number, by concurrencySum
 	f, err := os.Open(fname)
 	checkErr(err)
 	defer f.Close()
@@ -115,17 +137,30 @@ func sumup(fname string, startBytePos int64, endBytePos int64, fByteSize int64) 
 	checkErr(err)
 	fmt.Printf("Actual read %d bytes: '%s'\n", actualRead, string(dataBytes[:]))
 
-	// convert []byte to strings to []string to []int64
+	// convert []byte to strings to []string
 	words := strings.Fields(string(dataBytes))
-	sum := int64(0)
-	for _, v := range words {
-		vInt64, err := strconv.ParseInt(v, 10, 64) // string to int64
+	wordsLen := len(words)
+	partialSum := int64(0)
+	prefix := int64(0)
+	suffix := int64(0)
+	for i := 0; i < wordsLen; i++ {
+		vInt64, err := strconv.ParseInt(words[i], 10, 64) // string to int64
 		checkErr(err)
-		sum += vInt64
+		if i == 0 {
+			prefix = vInt64
+			continue
+		} else if i == wordsLen-1 {
+			suffix = vInt64
+		} else {
+			partialSum += vInt64
+		}
 	}
-	fmt.Println("sum: ", sum)
+	fmt.Println("partialSum: ", partialSum, " prefix: ", prefix, " suffix: ", suffix)
 
-	return sum
+	subsumResulti := SubSumResult{partialSum, int64(wordsLen - 2), prefix, suffix, startBytePos, endBytePos}
+	subsumResultiJson, err := json.Marshal(subsumResulti)
+	checkErr(err)
+	return subsumResultiJson
 }
 
 func checkErr(e error) {
@@ -138,6 +173,7 @@ func checkErr(e error) {
 func geneRandomInt(fname string) {
 	sou := rand.NewSource(time.Now().UnixNano())
 	ran := rand.New(sou)
+	realTotalSum := int64(0)
 
 	f, err := os.Create(fname)
 	checkErr(err)
@@ -145,7 +181,8 @@ func geneRandomInt(fname string) {
 
 	for i := 0; i < randomIntAmnt; i++ {
 		ranInt := ran.Intn(10000)
-		// fmt.Println(ranInt)
+		realTotalSum += int64(ranInt)
+
 		ranInt64Str := strconv.FormatInt(int64(ranInt), 10)
 		_, err = f.WriteString(ranInt64Str)
 		checkErr(err)
@@ -154,5 +191,5 @@ func geneRandomInt(fname string) {
 	}
 	_, err = f.WriteString("\n")
 	checkErr(err)
-	fmt.Println(fname, " has been generated and 100 random int has been stored.")
+	fmt.Println(fname, " has been generated and 100 random int has been stored. For future check, the real avg is: ", float64(realTotalSum)/float64(randomIntAmnt))
 }
