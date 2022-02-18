@@ -1,7 +1,7 @@
 
 # Project 1
  
-Write a GoLang multithreaded (goroutine) applications to compute the average of the integers stored in a file. 
+Write a GoLang multithreaded (goroutine, concurrency) applications to compute the average of the integers stored in a file. 
 
 ## Assignment
 
