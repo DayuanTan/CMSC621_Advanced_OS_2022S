@@ -6,10 +6,11 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
-const randomIntAmnt = 100
+const randomIntAmnt = 100 // how many random int numbers in input_data_file.txt
 
 type Assignment struct {
 	Datafile     string
@@ -30,7 +31,7 @@ func main() {
 
 	geneRandomInt(fname) // generate randome 100 int numbers and store into input_data_file.txt.
 
-	intM, err := strconv.Atoi(M)
+	intM, err := strconv.Atoi(M) // string to int
 	checkErr(err)
 
 	concurrencySum(intM, fname)
@@ -60,7 +61,7 @@ func concurrencySum(m int, fname string) {
 		b, err := json.Marshal(assignmenti)
 		checkErr(err)
 
-		go worker(b, subsums)
+		go worker(b, subsums, fByteSize)
 	}
 
 	for i := 0; i < m; i++ {
@@ -68,12 +69,12 @@ func concurrencySum(m int, fname string) {
 	}
 }
 
-func worker(assignment []byte, subsums chan int64) {
+func worker(assignment []byte, subsums chan int64, fByteSize int64) {
 	var assignmenti Assignment
 	err := json.Unmarshal(assignment, &assignmenti)
 	checkErr(err)
 	fmt.Println("worker got assignment: ", assignmenti)
-	subsums <- sumup(assignmenti.Datafile, assignmenti.StartBytePos, assignmenti.EndBytePos)
+	subsums <- sumup(assignmenti.Datafile, assignmenti.StartBytePos, assignmenti.EndBytePos, fByteSize)
 }
 
 func readUntilBlankByte(fname string, tempEndBytePos int64, fByteSize int64) int64 {
@@ -99,19 +100,32 @@ func readUntilBlankByte(fname string, tempEndBytePos int64, fByteSize int64) int
 	return tempEndBytePos
 }
 
-func sumup(fname string, startBytePos int64, endBytePos int64) int64 {
+func sumup(fname string, startBytePos int64, endBytePos int64, fByteSize int64) int64 { // the input will gurantee that don't cut a number, by concurrencySum
 	f, err := os.Open(fname)
 	checkErr(err)
 	defer f.Close()
 
+	if endBytePos > fByteSize {
+		endBytePos = fByteSize
+	}
 	dataBytes := make([]byte, endBytePos-startBytePos)
-	actualRead, err := f.Read(dataBytes)
+	_, err = f.Seek(startBytePos, 0) // go to the position startBytePos
 	checkErr(err)
-	fmt.Printf("Actual read %d bytes: %s\n", actualRead, string(dataBytes[:]))
+	actualRead, err := f.Read(dataBytes) // read bytes with length=dataBytes from the position startBytePos
+	checkErr(err)
+	fmt.Printf("Actual read %d bytes: '%s'\n", actualRead, string(dataBytes[:]))
 
-	//calc sum of dataByteshere
+	// convert []byte to strings to []string to []int64
+	words := strings.Fields(string(dataBytes))
+	sum := int64(0)
+	for _, v := range words {
+		vInt64, err := strconv.ParseInt(v, 10, 64) // string to int64
+		checkErr(err)
+		sum += vInt64
+	}
+	fmt.Println("sum: ", sum)
 
-	return 100
+	return sum
 }
 
 func checkErr(e error) {

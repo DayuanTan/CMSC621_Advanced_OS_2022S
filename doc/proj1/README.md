@@ -46,6 +46,10 @@ go test -cover
 
 ```
 
+## Note
+
+- position 0 refers to the first byte. So in the example of "1 2 33 444 555", [0, 1) read the first byte "1"; [1,5) gets " 2 3". 
+
 ## Reference:
 
 - Golang command line argument https://stackoverflow.com/a/2707480
