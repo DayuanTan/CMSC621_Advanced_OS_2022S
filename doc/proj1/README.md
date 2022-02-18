@@ -29,6 +29,9 @@ In order to control for distortions (delays due other running processes and the 
 [Assignment HTML](https://www.csee.umbc.edu/~kalpakis/courses/621-sp22/project/prj0.php), [PDF](proj1.pdf)
 
 
+## Structure
+
+![](img/structure.png)
 
 ## Run
 
