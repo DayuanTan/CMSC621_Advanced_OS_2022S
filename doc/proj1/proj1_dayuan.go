@@ -63,7 +63,7 @@ func concurrencySum(m int, fname string) float64 {
 		startBytePos = endBytePos
 		if i < m-1 {
 			tempEndBytePos := partLen * int64(i+1)
-			endBytePos = readUntilBlankByte(fname, tempEndBytePos, fByteSize)
+			endBytePos = readUntilWhitespaceByte(fname, tempEndBytePos, fByteSize)
 		} else if i == m-1 {
 			endBytePos = fByteSize
 		}
@@ -99,7 +99,7 @@ func worker(assignment []byte, subsumsChan chan []byte, fByteSize int64) {
 	subsumsChan <- sumup(assignmenti.Datafile, assignmenti.StartBytePos, assignmenti.EndBytePos, fByteSize)
 }
 
-func readUntilBlankByte(fname string, tempEndBytePos int64, fByteSize int64) int64 {
+func readUntilWhitespaceByte(fname string, tempEndBytePos int64, fByteSize int64) int64 {
 	f, err := os.Open(fname)
 	checkErr(err)
 	defer f.Close()

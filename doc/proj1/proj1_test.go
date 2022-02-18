@@ -10,7 +10,7 @@ import (
 )
 
 const fnameTest = "input_data_file_test.txt"
-const fnameReadUntilBlankByteTest = "test_data_for_readUntilBlankByte.test"
+const fnamereadUntilWhitespaceByteTest = "test_data_for_readUntilWhitespaceByte.test"
 const fnameSumupTest = "test_data_for_sumuptest.test"
 
 func TestCommandLineArgument4MainPanic(t *testing.T) {
@@ -60,57 +60,57 @@ func TestGenerRandomInt(t *testing.T) {
 	fmt.Println("Done!")
 }
 
-func TestReadUntilBlankByte(t *testing.T) {
-	fmt.Println("\nTestReadUntilBlankByte:")
+func TestreadUntilWhitespaceByte(t *testing.T) {
+	fmt.Println("\nTestreadUntilWhitespaceByte:")
 
 	testdata := []byte("1 2 33 444 555\n")
-	err := os.WriteFile(fnameReadUntilBlankByteTest, testdata, 0644) //0644: -rw-r--r--
+	err := os.WriteFile(fnamereadUntilWhitespaceByteTest, testdata, 0644) //0644: -rw-r--r--
 	checkErr(err)
-	fmt.Println(fnameReadUntilBlankByteTest, " created for testing readUntilBlankByteTest()!")
+	fmt.Println(fnamereadUntilWhitespaceByteTest, " created for testing readUntilWhitespaceByteTest()!")
 
-	actual := readUntilBlankByte(fnameReadUntilBlankByteTest, 0, 14)
+	actual := readUntilWhitespaceByte(fnamereadUntilWhitespaceByteTest, 0, 14)
 	expected := int64(1)
 	if actual != expected {
-		t.Errorf("TestReadUntilBlankByte() == %q, want %q", actual, expected)
+		t.Errorf("TestreadUntilWhitespaceByte() == %q, want %q", actual, expected)
 	}
 
-	actual = readUntilBlankByte(fnameReadUntilBlankByteTest, 1, 14)
+	actual = readUntilWhitespaceByte(fnamereadUntilWhitespaceByteTest, 1, 14)
 	expected = int64(1)
 	if actual != expected {
-		t.Errorf("TestReadUntilBlankByte() == %q, want %q", actual, expected)
+		t.Errorf("TestreadUntilWhitespaceByte() == %q, want %q", actual, expected)
 	}
 
-	actual = readUntilBlankByte(fnameReadUntilBlankByteTest, 2, 14)
+	actual = readUntilWhitespaceByte(fnamereadUntilWhitespaceByteTest, 2, 14)
 	expected = int64(3)
 	if actual != expected {
-		t.Errorf("TestReadUntilBlankByte() == %q, want %q", actual, expected)
+		t.Errorf("TestreadUntilWhitespaceByte() == %q, want %q", actual, expected)
 	}
 
-	actual = readUntilBlankByte(fnameReadUntilBlankByteTest, 3, 14)
+	actual = readUntilWhitespaceByte(fnamereadUntilWhitespaceByteTest, 3, 14)
 	expected = int64(3)
 	if actual != expected {
-		t.Errorf("TestReadUntilBlankByte() == %q, want %q", actual, expected)
+		t.Errorf("TestreadUntilWhitespaceByte() == %q, want %q", actual, expected)
 	}
 
-	actual = readUntilBlankByte(fnameReadUntilBlankByteTest, 4, 14)
+	actual = readUntilWhitespaceByte(fnamereadUntilWhitespaceByteTest, 4, 14)
 	expected = int64(6)
 	if actual != expected {
-		t.Errorf("TestReadUntilBlankByte() == %q, want %q", actual, expected)
+		t.Errorf("TestreadUntilWhitespaceByte() == %q, want %q", actual, expected)
 	}
 
-	actual = readUntilBlankByte(fnameReadUntilBlankByteTest, 13, 14)
+	actual = readUntilWhitespaceByte(fnamereadUntilWhitespaceByteTest, 13, 14)
 	expected = int64(13)
 	if actual != expected {
-		t.Errorf("TestReadUntilBlankByte() == %q, want %q", actual, expected)
+		t.Errorf("TestreadUntilWhitespaceByte() == %q, want %q", actual, expected)
 	}
 
-	err = os.Remove(fnameReadUntilBlankByteTest) // rm before leaving the test
+	err = os.Remove(fnamereadUntilWhitespaceByteTest) // rm before leaving the test
 	checkErr(err)
-	if _, err := os.Stat(fnameReadUntilBlankByteTest); !errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(fnamereadUntilWhitespaceByteTest); !errors.Is(err, os.ErrNotExist) {
 		// file exists
-		t.Errorf("File %s should not exist after Remove()!", fnameReadUntilBlankByteTest)
+		t.Errorf("File %s should not exist after Remove()!", fnamereadUntilWhitespaceByteTest)
 	}
-	fmt.Println(fnameReadUntilBlankByteTest, " removed successfully after testing!")
+	fmt.Println(fnamereadUntilWhitespaceByteTest, " removed successfully after testing!")
 
 	fmt.Println("Done!")
 }
