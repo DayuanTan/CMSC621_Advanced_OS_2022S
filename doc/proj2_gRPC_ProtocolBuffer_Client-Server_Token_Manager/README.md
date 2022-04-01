@@ -66,6 +66,7 @@ host: localhost
 port: 50051
 ```
 
-[Assignment PDF](./proj2_GoTokens.pdf)
+[Assignment PDF](./proj2_gRPC_ProtocolBuffer_ClientServerTokenManager.pdf)
 
 # My Solution
+

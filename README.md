@@ -24,5 +24,5 @@ Class home page: [web](https://www.csee.umbc.edu/~kalpakis/courses/621-sp22/cmsc
 - - ![](doc/proj1_go_concurrency/img/structure.png)
 
 - Proj2 **Client-Server Token Manager**, (PRC)
-- - [My solution (code and doc)](doc/proj2_Client-Server_Token_Manager/)
+- - [My solution (code and doc)](doc/proj2_gRPC_ProtocolBuffer_Client-Server_Token_Manager/)
 - - picture
