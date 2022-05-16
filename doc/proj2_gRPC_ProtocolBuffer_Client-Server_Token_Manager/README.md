@@ -76,6 +76,43 @@ port: 50051
 
 
 
+
+## Note
+
+### Note 1. Protocol Buffers
+In this project we use google ***Protocol Buffer***. Think it as XML/JSON or similar, but faster, easier, simpler, smaller. The proto compiler ***protoc*** will generate methods (setters/getters and so on) using various programming languages to manipulate the corresponding protocol buffer.
+
+
+
+We defined our ***token*** protocol buffer in ```proj2_dayuan/token/token.proto```.
+
+To compile it:
+```go
+cd ...path to.../proj2_dayuan
+proj2_dayuan$ protoc -I=token --go_out=token token/token.proto
+```
+It generated the file ```proj2_dayuan/token/token.pb.go``` which contains methods we can use. Then we can write message using them.
+
+### Note 2. Write/Read message 
+
+If read from or write to variables: just create instances.
+
+If read from or write to files on disk: using proto.Marshal() and proto.Unmarshal()
+
+### Note 3. Define Services in gRPC
+
+Add service definition and server-side methods in same ```proj2_dayuan/token/token.proto``` file as above.
+
+Next, to generate the gRPC client and server interfaces from our .proto service definition. We did this using the protocol buffer compiler ***protoc*** with a special gRPC Go plugin proto ***protoc-gen-go, protoc-gen-go-grpc***. 
+
+```go
+cd ...path to.../proj2_dayuan
+proj2_dayuan$ protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    token/token.proto
+```
+
+
 ## Run
 
 To run it, use below commands: 
@@ -96,22 +133,6 @@ go test -cover
 Screenshots:
 
 
-## Note
-
-### Note 1. Protocol Buffers
-In this project we use google ***Protocol Buffer***. Think it as XML/JSON or similar, but faster, easier, simpler, smaller. The proto compiler ***protoc*** will generate methods (setters/getters and so on) using various programming languages to manipulate the corresponding protocol buffer.
-
-
-
-We defined our ***token*** protocol buffer in ```proj2_dayuan/token/token.proto```.
-
-To compile it:
-```go
-cd ...path to.../proj2_dayuan
-proj2_dayuan$ protoc -I=token --go_out=token token/token.proto
-```
-It generated the file ```proj2_dayuan/token/token.pb.go``` which contains methods we can use.
-
 ## Reference:
 
 1. Protocol Buffers 
@@ -126,6 +147,14 @@ It generated the file ```proj2_dayuan/token/token.pb.go``` which contains method
       - https://github.com/protocolbuffers/protobuf/tree/main/examples
       - https://github.com/protocolbuffers/protobuf/blob/main/examples/addressbook.proto
 2. gRPC 
+   - Introduction to gRPC https://grpc.io/docs/what-is-grpc/introduction/
    - gRPC install, quick start https://grpc.io/docs/languages/go/quickstart/ 
    - gRPC Basics Tutorial https://grpc.io/docs/languages/go/basics/
-   - gRPC Hellow World Example repo https://github.com/grpc/grpc-go/tree/master/examples
+     - routeGuide Example Repo https://github.com/grpc/grpc-go/tree/master/examples/route_guide
+     - Define Services
+     - Generating client and server code
+     - Create Server
+     - Create Client
+       - Call Server Methods
+   - gRPC Hellow World Example Repo https://github.com/grpc/grpc-go/tree/master/examples
+  

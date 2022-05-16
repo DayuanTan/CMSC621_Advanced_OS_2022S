@@ -1,11 +1,18 @@
 // [START declaration]
 syntax = "proto3";
-package proj3;
+package token;
 // [END declaration]
 
 // [START go_declaration]
 option go_package = ".";
 // [END go_declaration]
+
+// The service definition.
+service TokenService {
+    rpc GetOneToken (Token) returns (Token);
+    rpc GetAllTokens(Token) returns (stream Token);
+}
+
 
 // [START messages]
 message Token {
