@@ -68,5 +68,64 @@ port: 50051
 
 [Assignment PDF](./proj2_gRPC_ProtocolBuffer_ClientServerTokenManager.pdf)
 
-# My Solution
 
+
+# My solution:
+
+## Structure
+
+
+
+## Run
+
+To run it, use below commands: 
+
+
+```go
+cd ...path to.../proj2_dayuan
+go run proj2.go 
+```
+
+To check out test:
+```go
+cd ...path to.../proj2_dayuan
+go test -cover
+
+```
+
+Screenshots:
+
+
+## Note
+
+### Note 1. Protocol Buffers
+In this project we use google ***Protocol Buffer***. Think it as XML/JSON or similar, but faster, easier, simpler, smaller. The proto compiler ***protoc*** will generate methods (setters/getters and so on) using various programming languages to manipulate the corresponding protocol buffer.
+
+
+
+We defined our ***token*** protocol buffer in ```proj2_dayuan/token/token.proto```.
+
+To compile it:
+```go
+cd ...path to.../proj2_dayuan
+proj2_dayuan$ protoc -I=token --go_out=token token/token.proto
+```
+It generated the file ```proj2_dayuan/token/token.pb.go``` which contains methods we can use.
+
+## Reference:
+
+1. Protocol Buffers 
+   1. Protocol Buffers install https://grpc.io/docs/protoc-installation/
+   2. Protocol Buffers How start? https://developers.google.com/protocol-buffers 
+   3. Protocol Buffers Overview https://developers.google.com/protocol-buffers/docs/overview 
+   4. Protocol Buffer Go tutorial/example https://developers.google.com/protocol-buffers/docs/gotutorial
+      - Define message formats in a .proto file.
+      - Use the protocol buffer compiler.
+      - Use the Go protocol buffer API to write and read messages.
+   1. One Example of Protocol Buffer: addressbook 
+      - https://github.com/protocolbuffers/protobuf/tree/main/examples
+      - https://github.com/protocolbuffers/protobuf/blob/main/examples/addressbook.proto
+2. gRPC 
+   - gRPC install, quick start https://grpc.io/docs/languages/go/quickstart/ 
+   - gRPC Basics Tutorial https://grpc.io/docs/languages/go/basics/
+   - gRPC Hellow World Example repo https://github.com/grpc/grpc-go/tree/master/examples

@@ -1,0 +1,20 @@
+// [START declaration]
+syntax = "proto3";
+package proj3;
+// [END declaration]
+
+// [START go_declaration]
+option go_package = ".";
+// [END go_declaration]
+
+// [START messages]
+message Token {
+    string id = 1; 
+    string name = 2;
+    uint64 domain_low = 3;
+    uint64 domain_mid = 4;
+    uint64 domain_high = 5;
+    uint64 state_partial_value = 6;
+    uint64 state_final_value = 7;
+}
+// [END messages]

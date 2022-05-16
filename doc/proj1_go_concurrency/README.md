@@ -28,6 +28,7 @@ In order to control for distortions (delays due other running processes and the 
 
 [Assignment HTML](https://www.csee.umbc.edu/~kalpakis/courses/621-sp22/project/prj0.php), [PDF](proj1.pdf)
 
+# My solution:
 
 ## Structure
 
@@ -38,13 +39,13 @@ In order to control for distortions (delays due other running processes and the 
 To run it, use below commands: (here *M=3, fname="input_data_file.txt"*)
 
 ```go
-cd ...path to.../proj1
+cd ...path to.../proj1_dayuan
 go run proj1_dayuan.go 3 input_data_file.txt
 ```
 
 To check out test:
 ```go
-cd ...path to.../proj1
+cd ...path to.../proj1_dayuan
 go test -cover
 
 ```
