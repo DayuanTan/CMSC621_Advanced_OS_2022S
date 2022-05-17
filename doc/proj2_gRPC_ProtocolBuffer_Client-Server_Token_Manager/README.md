@@ -112,6 +112,29 @@ proj2_dayuan$ protoc --go_out=. --go_opt=paths=source_relative \
     token/token.proto
 ```
 
+### Note 4. Implement Server/Client methods in server/tokenserver.go and client/tokenclient.go
+
+
+To run, either:
+
+```go
+cd ...path to.../proj2_dayuan/tokenserver
+proj2_dayuan/tokenserver$ go build //this generate file "proj2_dayuan/tokenserver/tokenserver"
+proj2_dayuan/tokenserver$ ./tokenserver -port 50051
+cd ...path to.../proj2_dayuan/tokenclient
+proj2_dayuan/tokenclient$ go build //this generate file "proj2_dayuan/tokenclient/tokenclient"
+proj2_dayuan/tokenclient$ ./tokenclient -create -id 123 -host localhost -port 50051
+```
+
+or:
+
+```go
+cd ...path to.../proj2_dayuan
+proj2_dayuan$ go run tokenserver/tokenserver.go -port 50051
+proj2_dayuan$ go run tokenclient/tokenclient.go -create -id 123 -host localhost -port 50051
+```
+
+
 
 ## Run
 
