@@ -20,20 +20,23 @@ const (
 )
 
 var (
-	addr             = flag.String("addr", "localhost:50051", "the address to connect to")
 	neededArgsAmount = map[string]int{
 		"-create": 6,
 		"-read":   6,
 		"-write":  14,
 		"-drop":   5,
 	}
-	id   int    = -1
-	name string = "default no name"
-	low  uint64 = 0
-	mid  uint64 = 0
-	high uint64 = 0
-	host string = "localhost"
-	port int    = 50051
+	createOperPtr = flag.Bool("create", false, "Claim create operation. Is bool.")
+	readOperPtr   = flag.Bool("read", false, "Claim read operation. Is bool.")
+	writeOperPtr  = flag.Bool("write", false, "Claim write operation. Is bool.")
+	dropOperPtr   = flag.Bool("drop", false, "Claim drop operation. Is bool.")
+	idPtr         = flag.Int("id", -1, "The id (int) for your token")
+	namePtr       = flag.String("name", defaultName, "The name (string) of your token")
+	lowPtr        = flag.Uint64("low", 0, "The low value (uint64) of your token")
+	midPtr        = flag.Uint64("mid", 0, "The mid value (uint64) of your token")
+	highPtr       = flag.Uint64("high", 0, "The high value (uint64) of your token")
+	hostPtr       = flag.String("host", "localhost", "The host (string) to connect to. Default is localhost")
+	portPtr       = flag.Int("port", 50051, "The port (int) to connect to. Default is 50051")
 )
 
 func parseArgsAndHandleErr(argsWithoutProg []string, caseNumber int) (int, string, int, uint64, uint64, uint64, string) {
@@ -109,6 +112,7 @@ func main() {
 	fmt.Println(id, host, port, low, mid, high, name)
 
 	flag.Parse()
+	fmt.Println(id, host, port, low, mid, high, name)
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
