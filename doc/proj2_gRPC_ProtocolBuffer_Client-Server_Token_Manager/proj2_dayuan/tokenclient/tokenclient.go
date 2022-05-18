@@ -158,7 +158,7 @@ func main() {
 	// Call server methods
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.GetOneToken(ctx, &pb.Token{Name: *namePtr})
+	r, err := c.CreateOneToken(ctx, &pb.Token{Name: *namePtr})
 	if err != nil {
 		log.Fatalf("Client: could not greet: %v", err)
 	}

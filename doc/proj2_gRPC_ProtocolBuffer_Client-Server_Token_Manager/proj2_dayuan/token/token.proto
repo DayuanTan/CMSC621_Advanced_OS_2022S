@@ -9,7 +9,7 @@ option go_package = ".";
 
 // The service definition.
 service TokenService {
-    rpc GetOneToken (Token) returns (Token);
+    rpc CreateOneToken (Token) returns (Token);
     rpc GetAllTokens(Token) returns (stream Token);
 }
 

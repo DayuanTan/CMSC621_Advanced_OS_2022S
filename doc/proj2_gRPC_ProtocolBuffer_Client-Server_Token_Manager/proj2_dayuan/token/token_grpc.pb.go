@@ -18,8 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TokenServiceClient interface {
-	// Sends a greeting
-	GetOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error)
+	CreateOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error)
 	GetAllTokens(ctx context.Context, in *Token, opts ...grpc.CallOption) (TokenService_GetAllTokensClient, error)
 }
 
@@ -31,9 +30,9 @@ func NewTokenServiceClient(cc grpc.ClientConnInterface) TokenServiceClient {
 	return &tokenServiceClient{cc}
 }
 
-func (c *tokenServiceClient) GetOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error) {
+func (c *tokenServiceClient) CreateOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error) {
 	out := new(Token)
-	err := c.cc.Invoke(ctx, "/token.TokenService/GetOneToken", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/token.TokenService/CreateOneToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,8 +75,7 @@ func (x *tokenServiceGetAllTokensClient) Recv() (*Token, error) {
 // All implementations must embed UnimplementedTokenServiceServer
 // for forward compatibility
 type TokenServiceServer interface {
-	// Sends a greeting
-	GetOneToken(context.Context, *Token) (*Token, error)
+	CreateOneToken(context.Context, *Token) (*Token, error)
 	GetAllTokens(*Token, TokenService_GetAllTokensServer) error
 	mustEmbedUnimplementedTokenServiceServer()
 }
@@ -86,8 +84,8 @@ type TokenServiceServer interface {
 type UnimplementedTokenServiceServer struct {
 }
 
-func (UnimplementedTokenServiceServer) GetOneToken(context.Context, *Token) (*Token, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOneToken not implemented")
+func (UnimplementedTokenServiceServer) CreateOneToken(context.Context, *Token) (*Token, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOneToken not implemented")
 }
 func (UnimplementedTokenServiceServer) GetAllTokens(*Token, TokenService_GetAllTokensServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetAllTokens not implemented")
@@ -105,20 +103,20 @@ func RegisterTokenServiceServer(s grpc.ServiceRegistrar, srv TokenServiceServer)
 	s.RegisterService(&TokenService_ServiceDesc, srv)
 }
 
-func _TokenService_GetOneToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _TokenService_CreateOneToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Token)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TokenServiceServer).GetOneToken(ctx, in)
+		return srv.(TokenServiceServer).CreateOneToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/token.TokenService/GetOneToken",
+		FullMethod: "/token.TokenService/CreateOneToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TokenServiceServer).GetOneToken(ctx, req.(*Token))
+		return srv.(TokenServiceServer).CreateOneToken(ctx, req.(*Token))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -152,8 +150,8 @@ var TokenService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*TokenServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetOneToken",
-			Handler:    _TokenService_GetOneToken_Handler,
+			MethodName: "CreateOneToken",
+			Handler:    _TokenService_CreateOneToken_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
