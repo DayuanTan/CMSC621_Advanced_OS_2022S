@@ -10,7 +10,10 @@ option go_package = ".";
 // The service definition.
 service TokenService {
     rpc CreateOneToken (Token) returns (Token);
-    rpc GetAllTokens(Token) returns (stream Token);
+    rpc WriteOneToken (Token) returns (Token);
+    rpc ReadOneToken (Token) returns (Token);
+    rpc DropOneToken (Token) returns (Token);
+    rpc GetAllTokens (Token) returns (stream Token);
 }
 
 
@@ -23,5 +26,6 @@ message Token {
     uint64 domain_high = 5;
     uint64 state_partial_value = 6;
     uint64 state_final_value = 7;
+    string message = 8;
 }
 // [END messages]

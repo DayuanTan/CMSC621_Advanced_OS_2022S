@@ -19,6 +19,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TokenServiceClient interface {
 	CreateOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error)
+	WriteOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error)
+	ReadOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error)
+	DropOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error)
 	GetAllTokens(ctx context.Context, in *Token, opts ...grpc.CallOption) (TokenService_GetAllTokensClient, error)
 }
 
@@ -33,6 +36,33 @@ func NewTokenServiceClient(cc grpc.ClientConnInterface) TokenServiceClient {
 func (c *tokenServiceClient) CreateOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error) {
 	out := new(Token)
 	err := c.cc.Invoke(ctx, "/token.TokenService/CreateOneToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tokenServiceClient) WriteOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error) {
+	out := new(Token)
+	err := c.cc.Invoke(ctx, "/token.TokenService/WriteOneToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tokenServiceClient) ReadOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error) {
+	out := new(Token)
+	err := c.cc.Invoke(ctx, "/token.TokenService/ReadOneToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tokenServiceClient) DropOneToken(ctx context.Context, in *Token, opts ...grpc.CallOption) (*Token, error) {
+	out := new(Token)
+	err := c.cc.Invoke(ctx, "/token.TokenService/DropOneToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,6 +106,9 @@ func (x *tokenServiceGetAllTokensClient) Recv() (*Token, error) {
 // for forward compatibility
 type TokenServiceServer interface {
 	CreateOneToken(context.Context, *Token) (*Token, error)
+	WriteOneToken(context.Context, *Token) (*Token, error)
+	ReadOneToken(context.Context, *Token) (*Token, error)
+	DropOneToken(context.Context, *Token) (*Token, error)
 	GetAllTokens(*Token, TokenService_GetAllTokensServer) error
 	mustEmbedUnimplementedTokenServiceServer()
 }
@@ -86,6 +119,15 @@ type UnimplementedTokenServiceServer struct {
 
 func (UnimplementedTokenServiceServer) CreateOneToken(context.Context, *Token) (*Token, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOneToken not implemented")
+}
+func (UnimplementedTokenServiceServer) WriteOneToken(context.Context, *Token) (*Token, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WriteOneToken not implemented")
+}
+func (UnimplementedTokenServiceServer) ReadOneToken(context.Context, *Token) (*Token, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadOneToken not implemented")
+}
+func (UnimplementedTokenServiceServer) DropOneToken(context.Context, *Token) (*Token, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DropOneToken not implemented")
 }
 func (UnimplementedTokenServiceServer) GetAllTokens(*Token, TokenService_GetAllTokensServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetAllTokens not implemented")
@@ -121,6 +163,60 @@ func _TokenService_CreateOneToken_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TokenService_WriteOneToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Token)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TokenServiceServer).WriteOneToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/token.TokenService/WriteOneToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TokenServiceServer).WriteOneToken(ctx, req.(*Token))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TokenService_ReadOneToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Token)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TokenServiceServer).ReadOneToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/token.TokenService/ReadOneToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TokenServiceServer).ReadOneToken(ctx, req.(*Token))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TokenService_DropOneToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Token)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TokenServiceServer).DropOneToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/token.TokenService/DropOneToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TokenServiceServer).DropOneToken(ctx, req.(*Token))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TokenService_GetAllTokens_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(Token)
 	if err := stream.RecvMsg(m); err != nil {
@@ -152,6 +248,18 @@ var TokenService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateOneToken",
 			Handler:    _TokenService_CreateOneToken_Handler,
+		},
+		{
+			MethodName: "WriteOneToken",
+			Handler:    _TokenService_WriteOneToken_Handler,
+		},
+		{
+			MethodName: "ReadOneToken",
+			Handler:    _TokenService_ReadOneToken_Handler,
+		},
+		{
+			MethodName: "DropOneToken",
+			Handler:    _TokenService_DropOneToken_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

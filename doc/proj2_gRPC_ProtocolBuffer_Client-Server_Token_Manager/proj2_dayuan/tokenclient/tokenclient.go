@@ -13,9 +13,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-const (
-	defaultName = "Dayuan"
-)
+const ()
 
 var (
 	// id               int    = -1
@@ -35,8 +33,8 @@ var (
 	readOperPtr   = flag.Bool("read", false, "Claim read operation. Is bool.")
 	writeOperPtr  = flag.Bool("write", false, "Claim write operation. Is bool.")
 	dropOperPtr   = flag.Bool("drop", false, "Claim drop operation. Is bool.")
-	idPtr         = flag.Int("id", -1, "The id (int) for your token")
-	namePtr       = flag.String("name", defaultName, "The name (string) of your token. Default is 'Dayuan'")
+	idPtr         = flag.String("id", "-1", "The id (string) for your token")
+	namePtr       = flag.String("name", "", "The name (string) of your token. Default is 'Dayuan'")
 	lowPtr        = flag.Uint64("low", 0, "The low value (uint64) of your token")
 	midPtr        = flag.Uint64("mid", 0, "The mid value (uint64) of your token")
 	highPtr       = flag.Uint64("high", 0, "The high value (uint64) of your token")
@@ -142,8 +140,10 @@ func main() {
 	// fmt.Println(id, host, port, low, mid, high, name)
 
 	flag.Parse()
+	log.Printf("Your input is:")
 	fmt.Println(*createOperPtr, *readOperPtr, *writeOperPtr, *dropOperPtr)
 	fmt.Println(*idPtr, *hostPtr, *portPtr, *lowPtr, *midPtr, *highPtr, *namePtr)
+	fmt.Println()
 	checkFlagsValidation()
 	addr := getAddr()
 
@@ -155,12 +155,29 @@ func main() {
 	defer conn.Close()
 	c := pb.NewTokenServiceClient(conn)
 
-	// Call server methods
+	// Call server methods to create one token
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.CreateOneToken(ctx, &pb.Token{Name: *namePtr})
-	if err != nil {
-		log.Fatalf("Client: could not greet: %v", err)
+	if *createOperPtr {
+		r, err := c.CreateOneToken(ctx, &pb.Token{
+			Id: *idPtr,
+		})
+		if err != nil {
+			log.Fatalf("Client: failed to call server CreateOneToken(): %v", err)
+		}
+		log.Printf("Client received: \nID: %v,\n", r.GetId())
 	}
-	log.Printf("Client received: %s", r.GetName())
+	if *writeOperPtr {
+		r, err := c.WriteOneToken(ctx, &pb.Token{
+			Id:         *idPtr,
+			Name:       *namePtr,
+			DomainLow:  *lowPtr,
+			DomainMid:  *midPtr,
+			DomainHigh: *highPtr,
+		})
+		if err != nil {
+			log.Fatalf("Client: failed to call server WriteOneToken(): %v", err)
+		}
+		log.Printf("Client received: \nID: %v,\nName: %s, \nDomainLow: %v, \nDomainMid: %v, \nDomainHigh: %v, \nStatePartialValue: %v, \nStateFinalValue: %v", r.GetId(), r.GetName(), r.GetDomainLow(), r.GetDomainMid(), r.GetDomainHigh(), r.GetStatePartialValue(), r.GetStateFinalValue())
+	}
 }
