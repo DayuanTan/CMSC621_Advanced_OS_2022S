@@ -79,6 +79,8 @@ port: 50051
 
 ## Note
 
+![](./structure.png)
+
 ### Note 1. Protocol Buffers
 In this project we use google ***Protocol Buffer***. Think it as XML/JSON or similar, but faster, easier, simpler, smaller. The proto compiler ***protoc*** will generate methods (setters/getters and so on) using various programming languages to manipulate the corresponding protocol buffer.
 
@@ -112,7 +114,7 @@ proj2_dayuan$ protoc --go_out=. --go_opt=paths=source_relative \
     token/token.proto
 ```
 
-### Note 4. Implement Server/Client methods in server/tokenserver.go and client/tokenclient.go
+### Note 4. Implement Server/Client methods in tokenserver/tokenserver.go and tokenclient/tokenclient.go
 
 
 To run, either:
@@ -131,29 +133,45 @@ or:
 ```go
 cd ...path to.../proj2_dayuan
 proj2_dayuan$ go run tokenserver/tokenserver.go -port 50051
-proj2_dayuan$ go run tokenclient/tokenclient.go -create -id 123 -host localhost -port 50051
+proj2_dayuan$ go run tokenclient/tokenclient.go -create -id 12345 -host localhost -port 50051
 ```
 
-
-
-## Run
-
-To run it, use below commands: 
-
-
+### All  commands I used are:
+- Server side:
 ```go
-cd ...path to.../proj2_dayuan
-go run proj2.go 
+proj2_dayuan/tokenserver$ go run tokenserver.go -port 50051
 ```
 
-To check out test:
+Details of commands and corresponding  logs are in [runlog_example/tokenserver.log.md](runlog_example/tokenserver.log.md)
+
+- Client side:
 ```go
-cd ...path to.../proj2_dayuan
-go test -cover
+proj2_dayuan/tokenclient$ go run tokenclient.go -create -id 222 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -create -id 222 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -create -id 12345 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -create -id 2222 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -write -id 2222 -name def -low 0 -mid 10 -high 100 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -write -id 12345 -name abc -low 0 -mid 10 -high 100 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -write -id 2 -name def -low 0 -mid 10 -high 100 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -read -id 2222 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -read -id 12345 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -read -id 1234 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -drop -id 12345 -host localhost -port 50051
 
 ```
 
-Screenshots:
+Details of commands and corresponding  logs are in [runlog_example/tokenclient.log.md](runlog_example/tokenclient.log.md)
+
 
 
 ## Reference:
