@@ -141,8 +141,8 @@ func main() {
 
 	flag.Parse()
 	log.Printf("Your input is:")
-	fmt.Println(*createOperPtr, *readOperPtr, *writeOperPtr, *dropOperPtr)
-	fmt.Println(*idPtr, *hostPtr, *portPtr, *lowPtr, *midPtr, *highPtr, *namePtr)
+	fmt.Println("Operation: Create: ", *createOperPtr, "; Read: ", *readOperPtr, "; Write: ", *writeOperPtr, "; Drop: ", *dropOperPtr)
+	fmt.Println("Parameters: ID: ", *idPtr, "; Host: ", *hostPtr, "; Port: ", *portPtr, "; Low: ", *lowPtr, "; Mid: ", *midPtr, "; High: ", *highPtr, "; Name: ", *namePtr)
 	fmt.Println()
 	checkFlagsValidation()
 	addr := getAddr()
@@ -165,7 +165,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Client: failed to call server CreateOneToken(): %v", err)
 		}
-		log.Printf("Client received: \nID: %v,\n", r.GetId())
+		log.Printf("Client received: \nID: %v, Message: %v\n", r.GetId(), r.GetMessage())
 	}
 	if *writeOperPtr {
 		r, err := c.WriteOneToken(ctx, &pb.Token{
@@ -178,6 +178,24 @@ func main() {
 		if err != nil {
 			log.Fatalf("Client: failed to call server WriteOneToken(): %v", err)
 		}
-		log.Printf("Client received: \nID: %v,\nName: %s, \nDomainLow: %v, \nDomainMid: %v, \nDomainHigh: %v, \nStatePartialValue: %v, \nStateFinalValue: %v", r.GetId(), r.GetName(), r.GetDomainLow(), r.GetDomainMid(), r.GetDomainHigh(), r.GetStatePartialValue(), r.GetStateFinalValue())
+		log.Printf("Client received: Message: %v, \nID: %v,\nName: %s, \nDomainLow: %v, \nDomainMid: %v, \nDomainHigh: %v, \nStatePartialValue: %v, \nStateFinalValue: %v", r.GetMessage(), r.GetId(), r.GetName(), r.GetDomainLow(), r.GetDomainMid(), r.GetDomainHigh(), r.GetStatePartialValue(), r.GetStateFinalValue())
+	}
+	if *readOperPtr {
+		r, err := c.ReadOneToken(ctx, &pb.Token{
+			Id: *idPtr,
+		})
+		if err != nil {
+			log.Fatalf("Client: failed to call server ReadOneToken(): %v", err)
+		}
+		log.Printf("Client received: Message: %v, \nID: %v,\nName: %s, \nDomainLow: %v, \nDomainMid: %v, \nDomainHigh: %v, \nStatePartialValue: %v, \nStateFinalValue: %v", r.GetMessage(), r.GetId(), r.GetName(), r.GetDomainLow(), r.GetDomainMid(), r.GetDomainHigh(), r.GetStatePartialValue(), r.GetStateFinalValue())
+	}
+	if *dropOperPtr {
+		r, err := c.DropOneToken(ctx, &pb.Token{
+			Id: *idPtr,
+		})
+		if err != nil {
+			log.Fatalf("Client: failed to call server DropOneToken(): %v", err)
+		}
+		log.Printf("Client received: %v \n", r.GetMessage())
 	}
 }
