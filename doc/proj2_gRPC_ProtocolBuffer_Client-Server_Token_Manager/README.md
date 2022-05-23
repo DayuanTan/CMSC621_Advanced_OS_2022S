@@ -114,6 +114,9 @@ proj2_dayuan$ protoc --go_out=. --go_opt=paths=source_relative \
     token/token.proto
 ```
 
+It generated 2 files ```proj2_dayuan/token/token.pb.go token_grpc.pb.go``` 
+
+
 ### Note 4. Implement Server/Client methods in tokenserver/tokenserver.go and tokenclient/tokenclient.go
 
 
@@ -137,6 +140,9 @@ proj2_dayuan$ go run tokenclient/tokenclient.go -create -id 12345 -host localhos
 ```
 
 ### All  commands I used are:
+
+(A video shows the reuslts when I run below commands.)
+
 - Server side:
 ```go
 proj2_dayuan/tokenserver$ go run tokenserver.go -port 50051
