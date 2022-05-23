@@ -265,5 +265,9 @@ DomainHigh: 100
 	StatePartialValue: 7;
 	StateFinalValue: 7
 
+2022/05/22 21:15:39 Server received: to read ID: 12345
+2022/05/22 21:15:39 Reading ID 12345 failed.
+
+
 ^Csignal: interrupt
 proj2_dayuan/tokenserver$

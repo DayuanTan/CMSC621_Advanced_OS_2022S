@@ -132,4 +132,12 @@ Parameters: ID:  12345 ; Host:  localhost ; Port:  50051 ; Low:  0 ; Mid:  0 ; H
 
 2022/05/20 23:30:54 Client received: Dropped 12345 successed
 
-proj2_dayuan/tokenclient$
+# Command 13: proj2_dayuan/tokenclient$ go run tokenclient.go -read -id 12345 -host localhost -port 50051
+
+proj2_dayuan/tokenclient$ go run tokenclient.go -read -id 12345 -host localhost -port 50051
+2022/05/22 21:15:39 Your input is:
+Operation: Create:  false ; Read:  true ; Write:  false ; Drop:  false
+Parameters: ID:  12345 ; Host:  localhost ; Port:  50051 ; Low:  0 ; Mid:  0 ; High:  0 ; Name:
+
+2022/05/22 21:15:39 Client: failed to call server ReadOneToken(): rpc error: code = Unknown desc = id 12345 was not found
+exit status 1

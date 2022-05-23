@@ -174,6 +174,7 @@ proj2_dayuan/tokenclient$ go run tokenclient.go -read -id 1234 -host localhost -
 
 proj2_dayuan/tokenclient$ go run tokenclient.go -drop -id 12345 -host localhost -port 50051
 
+proj2_dayuan/tokenclient$ go run tokenclient.go -read -id 12345 -host localhost -port 50051
 ```
 
 Details of commands and corresponding  logs are in [runlog_example/tokenclient.log.md](runlog_example/tokenclient.log.md)
