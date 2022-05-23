@@ -4,7 +4,7 @@ package token;
 // [END declaration]
 
 // [START go_declaration]
-option go_package = ".";
+option go_package = "token/token";
 // [END go_declaration]
 
 // The service definition.
