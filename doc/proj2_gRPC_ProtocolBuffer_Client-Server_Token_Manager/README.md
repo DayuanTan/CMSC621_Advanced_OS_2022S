@@ -79,7 +79,7 @@ port: 50051
 
 ## Note
 
-![](./img/structure.png)
+![](./img/structure.svg)
 
 ### Note 1. Protocol Buffers
 In this project we use google ***Protocol Buffer***. Think it as XML/JSON or similar, but faster, easier, simpler, smaller. The proto compiler ***protoc*** will generate methods (setters/getters and so on) using various programming languages to manipulate the corresponding protocol buffer.
