@@ -180,6 +180,10 @@ proj2_dayuan/tokenclient$ go run tokenclient.go -read -id 12345 -host localhost 
 Details of commands and corresponding  logs are in [runlog_example/tokenclient.log.md](runlog_example/tokenclient.log.md)
 
 
+# Video 
+
+Explan how I implement and how to run: https://www.youtube.com/watch?v=ai5oNH9kTZg
+
 
 ## Reference:
 
