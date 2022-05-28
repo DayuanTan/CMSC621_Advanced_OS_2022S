@@ -25,9 +25,9 @@ These are reference solutions when I worked as TA for this class.
 
 - - ![](doc/proj1_go_concurrency/img/structure.png)
 
-- Proj2 **Client-Server Token Manager**, (PRC)
+- Proj2 **Client-Server Token Manager**, (Google Protocol Buffer, gPRC)
 - - [My solution (code and doc)](doc/proj2_gRPC_ProtocolBuffer_Client-Server_Token_Manager/)
-- - picture
+- - ![](doc/proj2_gRPC_ProtocolBuffer_Client-Server_Token_Manager/img/structure1.png)
 
 
 
