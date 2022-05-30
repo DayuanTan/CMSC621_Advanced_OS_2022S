@@ -28,3 +28,8 @@ for any given token, whenever a client read returns a value v and a subsequent (
 To this end, you may need to maintain additional state information about each token, and implement the ***read-impose-write-all*** (quorum) protocol.
 
 Emulate **fail-silent** behavior for the server nodes as follows. A server node may “crash-stop” for operations on a particular token X (for which it is a reader or writer) at some time t by indefinitely postponing a response to all operations on X it receives after time t. A server may still be responding as usual to requests on other tokens for which it is a reader or writer.
+
+## Explanation
+
+One suggestions is read through the [Distributed System Abstraction Slides - Dr. Kalpakis](topic01-sys-abs.pdf) and [Chapter 4 Register Abstraction](Introduction%20to%20Reliable%20and%20Secure%20Distributed%20Programming%20by%20C.%20Cachin,%20L.Rodrigues,%20and%20R.Guerraoui%20(2011),%20sections%204.1.-4.3,%20pages%20137-159..pdf) before  your implementation to make sure all terms are understood correctly.
+
